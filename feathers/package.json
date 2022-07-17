@@ -1,0 +1,30 @@
+{
+  "name": "feathers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "test:unit": "mocha \"./test/**/*.test.js\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@feathersjs/authentication-local": "^4.5.15",
+    "@feathersjs/configuration": "^4.5.15",
+    "@feathersjs/errors": "^4.5.15",
+    "@feathersjs/express": "^4.5.15",
+    "@feathersjs/feathers": "^4.5.15",
+    "@feathersjs/socketio": "^4.5.15",
+    "asyncro": "^3.0.0",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "feathers-hooks-common": "^6.1.3",
+    "feathers-mongoose": "^8.5.1",
+    "mocha": "^10.0.0",
+    "mongoose": "^6.4.2",
+    "nodemon": "^2.0.18"
+  }
+}

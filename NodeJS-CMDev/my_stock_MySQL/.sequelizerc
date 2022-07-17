@@ -1,0 +1,11 @@
+// require("babel-register") // เรียกใช้งาน babel เพื่อให้ sequelize support es6
+
+const path = require('path')
+
+// ตั้งค่า path ที่อยู่ของ sequelizerc
+module.exports = {
+    'config': path.resolve('src/databases', 'sequelize.json'),
+    'models-path': path.resolve('src/databases', 'models'),
+    'migrations-path': path.resolve('src/databases', 'migrations'),
+    'seeders-path': path.resolve('src/databases', 'seeders'),
+}
