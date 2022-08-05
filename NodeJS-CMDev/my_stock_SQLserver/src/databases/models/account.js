@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       // setting sequelize
       sequelize,
-      modelName: 'Accounts', // ชื่อ Model ไว้เรียกใช้งาน
+      modelName: 'Accounts', // ชื่อ Model ไว้เรียกใช้งาน ต้องตรงกับชื่อ Table ใน database
       freezeTableName: true, // กำหนดชื่อ table Products ให้ตรงกับชื่อ Model เลย
       underscored: true,  // สามารถใช้ underscored มาเป็นชื่อ column ใน table ได้
       underscoreAll: true,
