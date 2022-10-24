@@ -1,3 +1,5 @@
+import UserModel from "../models/user.model.js";
+
 const login = (req, res) => {
   if (req.body.remember === "remember") {
     // บันทึกลง cookie เก็บเอาไว้ใช้งาน
@@ -21,9 +23,108 @@ const logout = (req, res) => {
   });
 };
 
+// curl -X POST -H "Content-Type: application/json" -d '{"firstName": "Siwat", "lastName": "Jermwatthana", "email": "admin@email.com", "username": "admin", "password": "password"}' localhost:3000/user
+const createUser = (req, res, next) => {
+  const user = new UserModel(req.body);
+
+  user.save((err) => {
+    if (err) {
+      return next(err); // debug throw error
+    } else {
+      res.json(user);
+    }
+  });
+};
+
+const getUserAll = (req, res, next) => {
+  // Mongoose javascript objects
+  UserModel.find({}, "firstName lastName username", { skip: req.params.page ?? 0, limit: 10 }, (err, users) => {
+    if (err) {
+      return next(err);
+    } else {
+      res.json(users);
+    }
+  });
+
+  // Mongoose Query builder
+  /*
+  UserModel.find({ firstName: "Siwat" })
+    .where("age")
+    .gt(18)
+    .lt(60)
+    .where("interests")
+    .in(["reading", "movies"])
+    .skip(0)
+    .limit(10)
+    .select("firstName lastName")
+    .exec((err, users) => {
+      if (err) {
+        return next(err);
+      } else {
+        res.json(users);
+      }
+    });
+  */
+};
+
+const readUsername = (req, res) => {
+  res.json(req.user);
+};
+
+// curl -X PATCH -H "Content-Type: application/json" -d '{"email": "newmail@email.com"}' localhost:3000/user/admin
+const updateUser = (req, res, next) => {
+  UserModel.findOneAndUpdate(
+    {
+      username: req.user.username,
+    },
+    req.body,
+    (err, user) => {
+      if (err) {
+        return next(err);
+      } else {
+        res.json(user);
+      }
+    }
+  );
+};
+
+// curl -X DELETE localhost:3000/user/user
+const deleteUser = (req, res, next) => {
+  // req.user จะ provide method delete มาให้แล้วเราสามารถเรียกใช้งานได้เลย
+  req.user.remove((err) => {
+    if (err) {
+      return next(err);
+    } else {
+      res.json(req.user);
+    }
+  });
+};
+
+const userByUsername = (req, res, next, username) => {
+  UserModel.findOne(
+    {
+      username: username,
+    },
+    (err, user) => {
+      if (err) {
+        return next(err);
+      } else {
+        req.user = user; // ยัด data user ลงใน req.user แล้วส่งออกไป
+        next(); // ส่งให้ middleware ตัวถัดไปทำงาน
+      }
+    }
+  );
+};
+
 const user = {
   login,
   logout,
+  getUserAll,
+  createUser,
+  userByUsername,
+  readUsername,
+  updateUser,
+  deleteUser,
 };
 
 export default user;

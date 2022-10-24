@@ -12,7 +12,8 @@ import indexRoutes from "../app/routes/index.routes.js";
 import userRoutes from "../app/routes/user.routes.js";
 
 dotenv.config();
-const redisClient = new Redis(6379, "127.0.0.1");
+
+const redisClient = new Redis(6379, "127.0.0.1"); // connect redis server
 
 export default () => {
   const app = express();
