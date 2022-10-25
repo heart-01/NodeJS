@@ -4,6 +4,7 @@ import compression from "compression";
 import sass from "node-sass-middleware";
 import cookieSession from "cookie-session";
 import session from "express-session";
+import passport from "passport";
 import Redis from "ioredis";
 import connectRedis from "connect-redis";
 
@@ -52,6 +53,9 @@ export default () => {
     })
   );
   */
+
+  app.use(passport.initialize()); // เริ่มการทำงาน passport
+  app.use(passport.session()); // ให้เริ่มการทำงานเก็บ session ของ user ด้วย โดยอาศัย express-session
 
   app.use(express.urlencoded({ extended: true })); // จะทำให้เรา parse application/x-www-form-urlencoded ได้ extended: true คือ ให้ server สามารถรองรับ ประเภท request แบบ nested array ถ้าไม่ใส่จะรองรับได้แค่ string กับ array
   app.use(express.json()); // ดูคำขอที่มี Content-Type: application/json ส่วนหัวและแปลงอินพุต JSON แบบ String ให้เป็นตัวแปรที่เข้าถึงได้แบบ json
