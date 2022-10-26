@@ -37,7 +37,7 @@ export default () => {
       cookie: {
         secure: process.env.NODE_ENV === "production" ? "true" : "auto",
         httpOnly: true,
-        expires: 60000,
+        expires: 600000,
       },
       store: new RedisStore({
         client: redisClient,

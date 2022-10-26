@@ -1,6 +1,8 @@
 import passport from "passport";
 import { model } from "mongoose";
 
+import "./strategies/local.js";
+
 const User = model("User"); // เรียกใช้ model user
 
 // authen เสร็จ ใช้ user.id เข้ารหัสแล้วเก็บเป็น session โดยเก็บเข้า cookie ที่ฝั่ง browser
