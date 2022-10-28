@@ -6,9 +6,9 @@ html
         if username
             h2 Hello #{username}
             div 
-                form(name='logout', method='POST', action='/logout')
-                div 
-                    input(type='submit', value='Logout')
+                form(name='logout', method='POST', action='logout')
+                    div 
+                        input(type='submit', value='Logout')
         else 
             div 
                 a(href='/signup') Sign up

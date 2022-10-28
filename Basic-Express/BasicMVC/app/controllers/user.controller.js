@@ -72,6 +72,14 @@ const renderLogin = (req, res) => {
   }
 };
 
+const logoutPassport = (req, res) => {
+  // req.logout; 
+  // res.redirect('/');
+  req.session.destroy((err) => { // passport ทำ method logout ให้กับ req
+    res.redirect('/');
+  });
+}
+
 // --------------------------------------------------------------------------------------------------------------------------------
 
 const login = (req, res) => {
@@ -197,6 +205,7 @@ const user = {
   renderLogin,
   login,
   logout,
+  logoutPassport,
   getUserAll,
   createUser,
   userByUsername,

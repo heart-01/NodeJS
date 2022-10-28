@@ -15,7 +15,8 @@ export const routers = (app) => {
       failureFlash: true
     }));
 
-  app.post("/logout", user.logout);
+  // app.post("/logout", user.logout);
+  app.post("/logout", user.logoutPassport);
 
   app.get("/users/:page?", user.getUserAll); // http://localhost:3000/users/30
   app.post("/user", user.createUser);
