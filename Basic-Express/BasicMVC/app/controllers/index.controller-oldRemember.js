@@ -1,7 +1,14 @@
 const render = (req, res) => {
+  let isLoggedIn = false;
+
+  if (typeof req.session.remember !== "undefined") {
+    isLoggedIn = req.session.remember;
+  }
+
+  // render ตาม path ที่ set ไว้ใน views แล้วนามสกุลไฟล์ไม่ต้องใส่ก็ได้ เพราะ set ไว้ใน views engine engine แล้ว
   res.render("index", {
     title: "Hello World",
-    username: req.user ? req.user.username : "", // Passport จะแนบ data user ให้เข้ามาที่ req ให้ตลอดเมื่อ login สำเร็จ
+    isLoggedIn,
   });
 };
 

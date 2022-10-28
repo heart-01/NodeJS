@@ -1,6 +1,10 @@
 import user from "../controllers/user.controller.js";
 
 export const routers = (app) => {
+  app.route('/signup')
+    .get(user.renderSingup)
+    .post(user.signup);
+
   app.post("/login", user.login);
   app.post("/logout", user.logout);
 

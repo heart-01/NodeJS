@@ -54,27 +54,25 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-    strict: true,
   }
 );
 
 // ก่อน save ลง mongo database ให้ทำอะไรก่อน
-userSchema.pre('save', (next) => {
+userSchema.pre('save', function (next) {
   if (this.password) { // ถ้ามี field password
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64'); // สร้าง salt เก็บลง database
     this.password = this.hashPassword(this.password); // เรียกใช้ methods ใน schema ขื่อ hashPassword เพื่อส่งรหัสผ่านไปเข้ารหัส
   }
-
   next();
 });
 
 // สร้าง method ให้กับ model instance ใน userSchema
-userSchema.methods.hashPassword = (password) => {
-  return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64'); // เข้ารหัส password โดยเอา salt เอาร่วมด้วย
+userSchema.methods.hashPassword = function (password) {
+  return crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'md5').toString('base64'); // เข้ารหัส password โดยเอา salt เอาร่วมด้วย
 }
 
 // สร้าง method authenticate ใน userSchema เพื่อช็ค password
-userSchema.methods.authenticate = (password) => {
+userSchema.methods.authenticate = function (password) {
   return this.password === this.hashPassword(password); // เอา password data ที่อยู่ใน schema กับ password ที่เข้ามาเข้ารหัส แล้วเช็คว่าตรงกันไหม
 }
 

@@ -1,5 +1,31 @@
 import UserModel from "../models/user.model.js";
 
+const renderSingup = (req, res) => {
+  res.render('signup', {
+    title: 'Sign up'
+  });
+};
+
+const signup = (req, res, next) => {
+  if (!req,user) { // ถ้าไม่มี user แนบมากับ req แสดงว่ายังไม่ได้ login
+    const user = new UserModel(req.body);
+    user.provider = 'local';
+    
+    user.save((err) => {
+      if (err) return res.redirect('/signup');
+      
+      // ถ้าสมัครผ่าน passport จะมี method login ให้ใช้งานเพื่อเข้าระบบ
+      req.login(user, (err) => {
+        if (err) return next(err); // debug throw error
+
+        return res.redirect('/');
+      });
+    });
+  } else {
+    return res.redirect('/');
+  }
+};
+
 const login = (req, res) => {
   if (req.body.remember === "remember") {
     // บันทึกลง cookie เก็บเอาไว้ใช้งาน
@@ -23,9 +49,10 @@ const logout = (req, res) => {
   });
 };
 
-// curl -X POST -H "Content-Type: application/json" -d '{"firstName": "Siwat", "lastName": "Jermwatthana", "email": "admin@email.com", "username": "admin", "password": "password"}' localhost:3000/user
+// curl -X POST -H "Content-Type: application/json" -d '{"firstName": "Siwat", "lastName": "Jermwatthana", "email": "admin@email.com", "username": "admins", "password": "password"}' localhost:3000/user
 const createUser = (req, res, next) => {
   const user = new UserModel(req.body);
+  user.provider = 'local';
 
   user.save((err) => {
     if (err) {
@@ -117,6 +144,8 @@ const userByUsername = (req, res, next, username) => {
 };
 
 const user = {
+  renderSingup,
+  signup,
   login,
   logout,
   getUserAll,
