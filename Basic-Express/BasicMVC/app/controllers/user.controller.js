@@ -61,6 +61,19 @@ const signup = (req, res, next) => {
   }
 };
 
+const renderLogin = (req, res) => {
+  if (!req.user) { // ถ้าไม่มี user แนบมากับ req แสดงว่ายังไม่ได้ login
+    res.render('login', {
+      title: 'Log in',
+      message: req.flash('error') // เรียกใช้ message จาก flash ที่เขียนไว้ด้วย key 'error' เมื่อมีการ redirect มา
+    });
+  } else {
+    return res.redirect('/');
+  }
+};
+
+// --------------------------------------------------------------------------------------------------------------------------------
+
 const login = (req, res) => {
   if (req.body.remember === "remember") {
     // บันทึกลง cookie เก็บเอาไว้ใช้งาน
@@ -181,6 +194,7 @@ const userByUsername = (req, res, next, username) => {
 const user = {
   renderSingup,
   signup,
+  renderLogin,
   login,
   logout,
   getUserAll,

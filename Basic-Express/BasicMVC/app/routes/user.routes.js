@@ -1,11 +1,20 @@
 import user from "../controllers/user.controller.js";
+import passport from "passport";
 
 export const routers = (app) => {
   app.route('/signup')
     .get(user.renderSingup)
     .post(user.signup);
 
-  app.post("/login", user.login);
+  app.route('/login')
+    .get(user.renderLogin)
+    // .post(user.login); // ใช้จากที่เขียนเอง
+    .post(passport.authenticate('local', { // passport.authenticate เป็น function เข้าสู่ระบบของ passport บอกให้ใช้ของ local ที่เราได้เขียนไว้ใน strategies local
+      successRedirect: '/', // ถ้าเกิด login สำเร็จให้ redirect ไปที่ไหน
+      failureFlash: '/login',
+      failureFlash: true
+    }));
+
   app.post("/logout", user.logout);
 
   app.get("/users/:page?", user.getUserAll); // http://localhost:3000/users/30
