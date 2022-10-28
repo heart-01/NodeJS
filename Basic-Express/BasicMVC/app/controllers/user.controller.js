@@ -1,18 +1,53 @@
 import UserModel from "../models/user.model.js";
 
+const getErrorMessage = (err) => {
+  let message = '';
+
+  if (err.code) {
+    switch (err.code) {
+      case 11000:
+      case 11001:
+        message = "Username already exists";
+        break;
+
+      default:
+        message = "Something went wrong";
+    }
+  } else {
+    // เคส Validation error จาก requried ของ userSchema
+    for (let errName in err.errors) {
+      if (err.errors[errName].message) {
+        message = err.errors[errName].message;
+      }
+    }
+  }
+
+  return message;
+}
+
 const renderSingup = (req, res) => {
-  res.render('signup', {
-    title: 'Sign up'
-  });
+  if (!req.user) { // ถ้าไม่มี user แนบมากับ req แสดงว่ายังไม่ได้ login
+    res.render('signup', {
+      title: 'Sign up',
+      message: req.flash('error') // เรียกใช้ message จาก flash ที่เขียนไว้ด้วย key 'error' เมื่อมีการ redirect มา
+    });
+  } else {
+    return res.redirect('/');
+  }
 };
 
 const signup = (req, res, next) => {
-  if (!req,user) { // ถ้าไม่มี user แนบมากับ req แสดงว่ายังไม่ได้ login
+  if (!req.user) { // ถ้าไม่มี user แนบมากับ req แสดงว่ายังไม่ได้ login
     const user = new UserModel(req.body);
     user.provider = 'local';
     
     user.save((err) => {
-      if (err) return res.redirect('/signup');
+      if (err) {
+        const message = getErrorMessage(err); // err จาก mongoose
+        req.flash('error', message); // เรียกใช้ flash message
+
+        return res.redirect('/signup');
+      }
       
       // ถ้าสมัครผ่าน passport จะมี method login ให้ใช้งานเพื่อเข้าระบบ
       req.login(user, (err) => {

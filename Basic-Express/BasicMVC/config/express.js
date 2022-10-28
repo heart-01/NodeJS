@@ -7,6 +7,7 @@ import session from "express-session";
 import passport from "passport";
 import Redis from "ioredis";
 import connectRedis from "connect-redis";
+import flash from "connect-flash";
 
 import dotenv from "dotenv";
 import indexRoutes from "../app/routes/index.routes.js";
@@ -37,7 +38,7 @@ export default () => {
       cookie: {
         secure: process.env.NODE_ENV === "production" ? "true" : "auto",
         httpOnly: true,
-        expires: 60000,
+        expires: 600000,
       },
       store: new RedisStore({
         client: redisClient,
@@ -53,6 +54,8 @@ export default () => {
     })
   );
   */
+
+  app.use(flash()); // เรียกใช้งาน Flash message alert
 
   app.use(passport.initialize()); // เริ่มการทำงาน passport
   app.use(passport.session()); // ให้เริ่มการทำงานเก็บ session ของ user ด้วย โดยอาศัย express-session
