@@ -15,7 +15,7 @@ passport.use(
       if (!user || !user.authenticate(password)) {   // เรียกใช้ method authenticate จาก userSchema เช็ค password
         // ถ้าเช็คแล้วไม่มี username หรือ password ไม่ถูกต้อง return error
         return done(null, false, {
-          message: "Invalid username or password",
+          message: "Incorrect username or password.",
         });
       }
 

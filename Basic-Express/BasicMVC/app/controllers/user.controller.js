@@ -1,4 +1,5 @@
 import UserModel from "../models/user.model.js";
+import passport from "passport";
 
 const getErrorMessage = (err) => {
   let message = '';
@@ -70,6 +71,33 @@ const renderLogin = (req, res) => {
   } else {
     return res.redirect('/');
   }
+};
+
+const signIn = (req, res) => {
+   // passport.authenticate เป็น function เข้าสู่ระบบของ passport บอกให้ใช้ของ local ที่เราได้เขียนไว้ใน strategies local
+  passport.authenticate(
+    "local",
+    (err, user, options) => {
+      if (user) {
+        // If the user exists log him in:
+        req.login(user, (error) => {
+          if (error) {
+            res.json(error);
+          } else {
+            // HANDLE SUCCESSFUL LOGIN
+            console.log("Successfully authenticated");
+            res.redirect("/");
+          }
+        });
+      } else {
+        // HANDLE FAILURE LOGGING IN
+        res.json(options.message); // Prints the reason of the failure
+        // e.g. res.redirect("/login"))
+        // or
+        // res.render("/login", { message: options.message || "custom message" })
+      }
+    }
+  )(req, res);
 };
 
 const logoutPassport = (req, res) => {
@@ -203,6 +231,7 @@ const user = {
   renderSingup,
   signup,
   renderLogin,
+  signIn,
   login,
   logout,
   logoutPassport,
