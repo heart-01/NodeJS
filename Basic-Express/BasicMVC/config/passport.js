@@ -3,6 +3,7 @@ import UserModel from "../app/models/user.model.js";
 
 import "./strategies/local.js";
 import "./strategies/facebook.js";
+import "./strategies/google.js";
 
 // authen เสร็จ ใช้ user.id เข้ารหัสแล้วเก็บเป็น session โดยเก็บเข้า cookie ที่ฝั่ง browser
 passport.serializeUser((user, done) => { // parameter user คือ user ที่ผ่านการ login แล้ว

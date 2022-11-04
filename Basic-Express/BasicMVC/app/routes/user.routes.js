@@ -6,15 +6,31 @@ export const routers = (app) => {
     .get(user.renderSingup)
     .post(user.signup);
 
+  // Login local
   app.route('/login')
     .get(user.renderLogin)
     // .post(user.login); // ใช้จากที่เขียนเอง
     .post(user.signIn);
 
+  // Login Facebook
   app.get('/oauth/facebook', passport.authenticate('facebook', {
     failureRedirect: '/login',
   }));
   app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
+    failureRedirect: '/login',
+    successRedirect: '/',
+  }));
+
+  // Login Google
+  app.get('/oauth/google', passport.authenticate('google', {
+    // scope จะบอกว่าเราไปขอ api จาก google+ api ไปขออะไรบ้าง
+    scope: [
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email',
+    ],
+    failureRedirect: '/login',
+  }));
+  app.get('/oauth/google/callback', passport.authenticate('google', {
     failureRedirect: '/login',
     successRedirect: '/',
   }));
