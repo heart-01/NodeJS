@@ -1,9 +1,8 @@
 import passport from "passport";
-import { model } from "mongoose";
+import UserModel from "../app/models/user.model.js";
 
 import "./strategies/local.js";
-
-const User = model("User"); // เรียกใช้ model user
+import "./strategies/facebook.js";
 
 // authen เสร็จ ใช้ user.id เข้ารหัสแล้วเก็บเป็น session โดยเก็บเข้า cookie ที่ฝั่ง browser
 passport.serializeUser((user, done) => { // parameter user คือ user ที่ผ่านการ login แล้ว
@@ -13,7 +12,7 @@ passport.serializeUser((user, done) => { // parameter user คือ user ที
 // deserializeUser เป็นการถอดรหัสที่ได้จาก cookie แล้วดึงข้อมูล user.id จาก database
 passport.deserializeUser((id, done) => {
   // Query findById โดยที่ไม่เอา password และ salt ติดออกมาแสดงด้วย
-  User.findById({ _id: id }, "-password -salt", (err, user) => {
+  UserModel.findById({ _id: id }, "-password -salt", (err, user) => {
     done(err, user); // ถ้าค้นหาเจอก็จะส่ง user ออกไป ถ้ามี error ก็ส่ง error ออกไปด้วย
   });
 });

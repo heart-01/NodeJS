@@ -108,6 +108,43 @@ const logoutPassport = (req, res) => {
   });
 }
 
+const saveOAuthUserProfile = (req, profile, done) => { // req, profile, done เดี๋ยว passport จะส่งต่าเข้ามาหลัง login แล้ว ส่วน profile จะเป็นข้อมูลของ user ที่แต่ละ provider ส่งมาเมื่อผ่านการ login
+  // หาใน database ว่ามีการเก็บข้อมูลของ user ที่ login เข้ามาไหม
+  UserModel.findOne({
+    provider: profile.provider,     // strategy ที่ user login เข้ามา
+    providerId: profile.providerId  // user id ที่ได้จาก provider หลังจาก login สำเร็จ
+  }, (err, user) => {
+    if (err) {  // ถ้าค้นหาแล้วมี error
+      return done(err); 
+    } else {
+      if (!user) {  // ถ้าค้นหาแล้วไม่มีข้อมูลของ user
+        const possibleUsername = profile.username || (profile.email ? profile.email.split('@')[0] : ''); // บาง provider อาจไม่มี username มาให้เราจะตัดจาก email มาทำเป็น username แทน
+
+        // เช็คว่า username ซ้ำกันไหม
+        UserModel.findUniqueUsername(
+          possibleUsername,   // ชื่อ username ที่จะนำไปค้นหา
+          null,               // เป็น suffix ที่จะให้เติมให้กับ username
+          function (availableUsername) {  // ส่ง callback function เข้าไปเป็น parameter เพื่อเอาไว้ให้ findUniqueUsername เรียกใช้งาน
+            profile.username = availableUsername; // กำหนดให้ username ของ profile ที่ login มีค่าเป็น parameter ที่ส่งเข้ามา
+            user = new UserModel(profile); // save data user
+            user.save((err) => {
+              if (err) {
+                const message = getErrorMessage(err);
+                req.flash('error', message);
+                return done(err); 
+              }
+
+              return done(null, user); // ถ้า save สำเร็จ
+            });
+          }
+        );
+      } else {      // ถ้ามีข้อมูลของ user อยู่แล้ว
+        return done(err, user);
+      }
+    }
+  });
+}
+
 // --------------------------------------------------------------------------------------------------------------------------------
 
 const login = (req, res) => {
@@ -241,6 +278,7 @@ const user = {
   readUsername,
   updateUser,
   deleteUser,
+  saveOAuthUserProfile,
 };
 
 export default user;

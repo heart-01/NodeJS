@@ -1,4 +1,5 @@
 import user from "../controllers/user.controller.js";
+import passport from "passport";
 
 export const routers = (app) => {
   app.route('/signup')
@@ -9,6 +10,14 @@ export const routers = (app) => {
     .get(user.renderLogin)
     // .post(user.login); // ใช้จากที่เขียนเอง
     .post(user.signIn);
+
+  app.get('/oauth/facebook', passport.authenticate('facebook', {
+    failureRedirect: '/login',
+  }));
+  app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
+    failureRedirect: '/login',
+    successRedirect: '/',
+  }));
 
   // app.post("/logout", user.logout);
   app.post("/logout", user.logoutPassport);

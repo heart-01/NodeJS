@@ -25,7 +25,6 @@ const userSchema = new Schema(
     },
     password: {
       type: Schema.Types.String,
-      required: true,
       validate: [
         // กำหนด schema เอง
         (password) => {
@@ -74,6 +73,25 @@ userSchema.methods.hashPassword = function (password) {
 // สร้าง method authenticate ใน userSchema เพื่อช็ค password
 userSchema.methods.authenticate = function (password) {
   return this.password === this.hashPassword(password); // เอา password data ที่อยู่ใน schema กับ password ที่เข้ามาเข้ารหัส แล้วเช็คว่าตรงกันไหม
+}
+
+
+// สร้าง static method ชื่อ authenticfindUniqueUsernameate ให้กับ class userSchema เพื่อช็ค
+userSchema.statics.findUniqueUsername = function (username, suffix, callback) { // callback จะรับชื่อที่ได้ไป insert ใส่ใน database เช่น function(availableUsername)
+  const _this = this;
+  const possibleUsername = username + (suffix || ''); // นำ username ที่เข้ามาประกอบกับ suffix
+
+  // เช็คว่า username ซ้ำกันไหม
+  _this.findOne({
+    username: possibleUsername,
+  }, function(err, user) {
+    if (!err) {
+      if (!user) callback(possibleUsername); // ถ้าไม่มี user ให้สร้าง user ใหม่ตามที่ส่ง function callback เข้ามาเรียก
+      else return _this.findUniqueUsername(username, (suffix || 0) + 1, callback); // ถ้าเจอ username ซ้ำกันใน database ให้เรียก function ตัวเองกใหม่อีกครั้งโดยเพิ่มเติมคือใส่ suffix เลข 1 เติมเข้าไปต่อท้าย username ด้วย
+    } else {
+      callback(null); // ถ้า error ใส่ null เพื่อบอกว่าหา username ที่ unique ไม่ได้
+    }
+  });
 }
 
 const userModel = model("User", userSchema);
