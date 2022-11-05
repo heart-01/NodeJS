@@ -1,0 +1,17 @@
+@base_url = http://localhost
+@port = 3000
+@url = {{base_url}}:{{port}}
+
+### Login 
+POST {{url}}/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "admin@email.com",
+    "password": "password"
+}
+
+### GET profile
+GET  {{url}}/user/profile HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic3ViIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGVtYWlsLmNvbSIsImlhdCI6MTY2NzY3NTY0MywiZXhwIjoxNjY3Njc1NzAzfQ.R13HgiLBvNmOzxv5djvlry_oWqd7C95iEXeBgkn8kvs
