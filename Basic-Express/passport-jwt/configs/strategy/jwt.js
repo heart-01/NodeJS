@@ -12,7 +12,7 @@ const jwtOptions = {
   secretOrKey: "your_jwt_secret", //SECRET เดียวกับตอน encode
 };
 
-// decode jwt token
+// decode jwt token จะถูกเรียกใช้งานตอนที่ user ส่ง Bearer token เข้ามาแล้วไปค้นหาข้อมูลใน db เพื่อส่งไปยัง route ถัดไปที่มี middleware authentication กั้นอยู่
 passport.use(
   new JWTStrategy(jwtOptions, (jwtPayload, done) => {
     //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
@@ -30,12 +30,11 @@ passport.use(
         const user = {
           id: UserModel.id,
           sub: UserModel.sub,
-          email: UserModel.email,
+          message: "send from JWTStrategy"
         };
-        // return done(null, UserModel);
         return done(null, user);
       } else {
-        return done(null, false);
+        return done(null, false); //ส่วน function callback “done” parameters ตัวแรกจะหมายถึง error ส่วนตัวที่สองคือ ผ่าน หรือไม่ผ่าน done(errorOrNot, passOrNot);
       }
     } catch (error) {
       return done(error, false);

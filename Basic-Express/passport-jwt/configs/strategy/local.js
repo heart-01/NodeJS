@@ -20,9 +20,16 @@ passport.use(
       //   .catch((err) => done(err));
 
       //this one is typically a DB call.
-      if (email !== UserModel.email || password !== UserModel.password) return done(null, false, { message: "Incorrect email or password." });
+      if (email !== UserModel.email || password !== UserModel.password) {
+        return done(null, false, { message: "Incorrect email or password." });
+      }
 
-      return done(null, UserModel, { message: "Logged In Successfully" });
+      const mockUser = {
+        id: UserModel.id,
+        sub: UserModel.sub,
+        email: UserModel.email,
+      };
+      return done(null, mockUser, { message: "Logged In Successfully" });
     }
   )
 );

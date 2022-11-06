@@ -22,7 +22,7 @@ const generateToken = (payload) =>
 
 /* POST login. */
 router.post("/login", (req, res, next) => {
-  passport.authenticate("local", { session: false }, (err, user, info) => {
+  passport.authenticate("local", { session: false }, (err, user, options) => {
     //  {session: false} ในฟังก์ชัน passport.authenticate() หมายถึงเราไม่ต้องการเก็บ user ไว้ใน session โดยเราสร้างและส่งค่าเป็น JSON web token ที่มีการ sign กับ user object ให้กับ client เท่านั้น ซึ่งใน user object นั้นไม่ควรเป็นข้อมูลสำคัญ เช่น password ควรเป็นข้อมูลที่สามารถช่วยในการยืนยันตัวตนได้ เช่น id, username หรือ email
     if (err) return next(err);
     if (user) {
@@ -32,9 +32,9 @@ router.post("/login", (req, res, next) => {
         email: UserModel.email,
       };
       const token = generateToken(mockUser);
-      return res.json({ mockUser, token });
+      return res.json({ user, token });
     } else {
-      return res.status(422).json(info);
+      return res.status(422).json(options);
     }
   })(req, res, next);
 });
