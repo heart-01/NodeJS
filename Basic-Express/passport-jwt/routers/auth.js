@@ -17,7 +17,7 @@ const signOptions = {
 const generateToken = (payload) =>
   jwt.sign(payload, privateKey, {
     ...signOptions,
-    expiresIn: 60, // 60 sec
+    expiresIn: 600000, // 60 sec
   });
 
 /* POST login. */

@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import passport from "passport";
+import { passportVerifyToken } from '../middlewares/authentication.js';
+
 
 import auth from "./auth.js";
 import user from "./user.js";
@@ -7,6 +8,6 @@ import user from "./user.js";
 const router = Router();
 
 router.use("/auth", auth);
-router.use("/user", passport.authenticate("jwt", { session: false }), user);
+router.use("/user", passportVerifyToken, user);
 
 export default router;

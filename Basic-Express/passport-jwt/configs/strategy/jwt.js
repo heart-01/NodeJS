@@ -7,9 +7,11 @@ import UserModel from "../../mocks/UserModel.js";
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
+const publicKey = "your_jwt_secret";
+
 const jwtOptions = {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), // ExtractJWT.fromAuthHeaderAsBearerToken คือ การกำหนดให้ client จะต้องส่ง JWT Token โดยตั้งค่า Header ให้มี Key เป็น Authorization และ Value เป็น Bearer <token>
-  secretOrKey: "your_jwt_secret", //SECRET เดียวกับตอน encode
+  secretOrKey: publicKey, //SECRET เดียวกับตอน encode
 };
 
 // decode jwt token จะถูกเรียกใช้งานตอนที่ user ส่ง Bearer token เข้ามาแล้วไปค้นหาข้อมูลใน db เพื่อส่งไปยัง route ถัดไปที่มี middleware authentication กั้นอยู่
@@ -30,7 +32,7 @@ passport.use(
         const user = {
           id: UserModel.id,
           sub: UserModel.sub,
-          message: "send from JWTStrategy"
+          message: "send from JWTStrategy",
         };
         return done(null, user);
       } else {
