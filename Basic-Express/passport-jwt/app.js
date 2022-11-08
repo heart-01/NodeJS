@@ -7,7 +7,6 @@ const port = process.env.PORT || 3000;
 
 // Set Parses JSON
 app.use(express.json());
-app.use(routes);
 
 // Error Handler
 app.use((err, req, res, next) => {
@@ -20,6 +19,15 @@ app.use((err, req, res, next) => {
     },
   });
 });
+
+// Pass token to request
+app.use((req, res, next) => {
+  const token = req.headers.authorization;
+  req.token = token;
+  next();
+});
+
+app.use(routes);
 
 // Start Server
 app.listen(port, () => console.log(`Server is running on port ${port}`));
