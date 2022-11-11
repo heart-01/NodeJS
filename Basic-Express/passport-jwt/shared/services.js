@@ -15,13 +15,13 @@ const optionsAxios = (url, token, method, data) => {
   };
 };
 
-const get = async (req, url) => {
+const get = (token) => async (url) => {
   try {
     // handle success
-    const response = await axios(optionsAxios(url, req.token, "GET"));
+    const response = await axios(optionsAxios(url, token, "GET"));
 
     return {
-      res: response,
+      response,
       data: response.data,
     };
   } catch (error) {
@@ -30,13 +30,13 @@ const get = async (req, url) => {
   }
 };
 
-const post = async (req, url, data) => {
+const post = (token) => async (url, data) => {
   try {
     // handle success
-    const response = await axios(optionsAxios(url, req.token, "POST", data));
+    const response = await axios(optionsAxios(url, token, "POST", data));
 
     return {
-      res: response,
+      response,
       data: response.data,
     };
   } catch (error) {

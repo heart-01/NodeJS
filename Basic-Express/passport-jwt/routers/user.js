@@ -1,5 +1,4 @@
 import { Router } from "express";
-import services from "../shared/services.js";
 
 const router = Router();
 
@@ -10,10 +9,17 @@ router.get("/", (req, res, next) => {
 
 // GET /user/profile หากเข้า url นี้จะตอบกลับด้วย user object
 router.get("/profile", async (req, res, next) => {
-  const { data } = await services.get(req, "/user");
+  const { data } = await req.services.get("/user");
+
+  const { response } = await req.services.post("/auth/login", {
+    email: "admin@email.com",
+    password: "password",
+  });
+
   res.send({
     profile: req.profile,
-    data,
+    testGET: data,
+    testPOST: response.data,
   });
 });
 

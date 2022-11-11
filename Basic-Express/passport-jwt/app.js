@@ -1,5 +1,6 @@
 import express from "express";
 import routes from "./routers/index.js";
+import services from "./shared/services.js";
 import "./configs/passport.js";
 
 const app = express();
@@ -20,10 +21,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Pass token to request
+// Pass services to request
 app.use((req, res, next) => {
   const token = req.headers.authorization;
-  req.token = token;
+  req.services = {
+    get: services.get(token),
+    post: services.post(token),
+  };
   next();
 });
 
