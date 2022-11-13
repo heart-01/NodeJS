@@ -1,6 +1,6 @@
 import { ForbiddenError } from '@casl/ability';
 import { User } from './entities/user.entity';
-import { AbilityFactory, Action, } from '../ability/ability.factory/ability.factory';
+import { AbilityFactory, Action, } from '../ability/ability.factory';
 import { Controller, Get, Post, Body, Patch, Param, Delete, ForbiddenException, } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';

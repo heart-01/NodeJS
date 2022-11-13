@@ -1,4 +1,4 @@
-import { Action, AbilityFactory, } from './../ability/ability.factory/ability.factory';
+import { Action, AbilityFactory, } from '../ability/ability.factory';
 import { ForbiddenError } from '@casl/ability';
 import { User } from './entities/user.entity';
 import { Injectable } from '@nestjs/common';

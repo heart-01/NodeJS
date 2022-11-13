@@ -1,4 +1,4 @@
-import { AbilityFactory } from './ability.factory/ability.factory';
+import { AbilityFactory } from './ability.factory';
 import { Module } from '@nestjs/common';
 
 @Module({
