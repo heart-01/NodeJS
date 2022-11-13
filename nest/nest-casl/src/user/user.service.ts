@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-@Injectable()
+@Injectable() // ประกาศว่าเป็น DI service provider เพื่อสามารถนำไปฉีดเข้าใน controller
 export class UserService {
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
