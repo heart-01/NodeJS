@@ -36,12 +36,16 @@ export class AbilityFactory {
     // ถ้ามี user role admin เข้ามา
     if (user.role === 'admin') {
       allow(Action.Manage, 'all'); // ให้สิทธิ์สามารถ Action Manage กับ Subject all จะสามารถทำทุกอย่างในแอปได้
+
+      // admin ไม่สามารถใช้ Manage ของ User ได้ถ้า organizationId ของ User ที่คุณกำลังจัดการนั้นไม่ตรงกับ organizationId กับ admin ที่กำลังจัดการ
+      disallow(Action.Manage, User, { organizationId: { $ne: user.organizationId } }).because("You can only manage users in your own organization");
     }
 
     if (user.role === 'user') {
       //   allow(Action.Read, 'all');
 
       allow(Action.Read, User);
+      disallow([Action.Create, Action.Update], User).because('your special message: only admin!!!'); // กำหนดไม่สามารถใช้งานได้แล้วส่ง error ออกไป
     }
 
     // return สิ่งที่ defineAbility ทำไว้ทั้งหมดออกไปซึ่งก็คือ 
