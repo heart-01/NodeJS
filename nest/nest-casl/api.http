@@ -9,6 +9,9 @@ Content-Type: application/json
 ### GET user
 GET {{url}}/users HTTP/1.1
 
+### GET find ond user
+GET {{url}}/users/1 HTTP/1.1
+
 ### Create user 
 POST {{url}}/users HTTP/1.1
 

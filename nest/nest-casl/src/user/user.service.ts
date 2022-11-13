@@ -25,8 +25,7 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto, currentUser: User) {
-    // ย้ายการเช็ค ability casl จาก controller มาอยู่ใน service
-    const ability = this.abilityFactory.defineAbility(currentUser);
+    const ability = this.abilityFactory.defineAbility(currentUser); // เรียกใช้งาน method defineAbility จาก DI ของ AbilityFactory แล้วส่ง currentUser เข้าไปเพื่อตรวจสอบสิทธิ์
 
     const userToUpdate = this.findOne(+id); // ค้นหา user ที่ต้องการจะ update จะได้รับ return เป็น User Model
     ForbiddenError.from(ability).throwUnlessCan(Action.Update, userToUpdate);

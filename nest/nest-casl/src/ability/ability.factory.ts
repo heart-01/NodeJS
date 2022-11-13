@@ -45,7 +45,7 @@ export class AbilityFactory {
       //   allow(Action.Read, 'all');
 
       allow(Action.Read, User);
-      disallow([Action.Create, Action.Update], User).because('your special message: only admin!!!'); // กำหนดไม่สามารถใช้งานได้แล้วส่ง error ออกไป
+      disallow([Action.Create, Action.Update, Action.Delete], User).because('your special message: only admin!!!'); // กำหนดไม่สามารถใช้งานได้แล้วส่ง error ออกไป
     }
 
     // return สิ่งที่ defineAbility ทำไว้ทั้งหมดออกไปซึ่งก็คือ 
