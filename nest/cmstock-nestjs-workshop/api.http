@@ -14,8 +14,8 @@ POST {{url}}/stock HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "name",
-    "price": "price",
+    "name": "test",
+    "price": 25.8,
     "stock": 1234
 }
 

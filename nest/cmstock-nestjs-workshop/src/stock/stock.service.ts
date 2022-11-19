@@ -1,17 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStockDto } from './dto/create-stock.dto';
 import { UpdateStockDto } from './dto/update-stock.dto';
+import { ProductEntity } from './entities/product.entity';
+import { ProductRepository } from './repositories/product.repository';
 
 @Injectable()
 export class StockService {
-  create(createStockDto: CreateStockDto) {
-    const { name, price, stock } = createStockDto;
-    console.log(name, price, stock);
-    return 'This action adds a new stock';
+  constructor(private productRepository: ProductRepository) {} // ฉีด ProductRepository เข้ามาใน class StockService
+
+  async create(createStockDto: CreateStockDto): Promise<object> {
+    const product = await this.productRepository.insertProduct(createStockDto);
+
+    return {
+      success: true,
+      data: product ,
+    };
   }
 
-  findAll(): number[] {
-    return [1, 2, 3];
+  async findAll(): Promise<ProductEntity[]> {
+    return await this.productRepository.find();
   }
 
   findOne(id: number): string {
