@@ -10,23 +10,23 @@ export class StockService {
     return 'This action adds a new stock';
   }
 
-  findAll() {
+  findAll(): number[] {
     return [1, 2, 3];
   }
 
-  findOne(id: number) {
+  findOne(id: number): string {
     return `This action returns a #${id} stock`;
   }
 
-  update(id: number, updateStockDto: UpdateStockDto) {
+  update(id: number, updateStockDto: UpdateStockDto): string {
     return `This action updates a #${id} stock`;
   }
 
-  updateAll(id: number, updateStockDto: UpdateStockDto) {
+  updateAll(id: number, updateStockDto: UpdateStockDto): string {
     return `This action updates a #${id} stock`;
   }
 
-  remove(id: number) {
+  remove(id: number): string {
     return `This action removes a #${id} stock`;
   }
 }
