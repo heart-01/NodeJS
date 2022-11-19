@@ -1,0 +1,29 @@
+@base_url = http://localhost
+@port = 3000
+@url = {{base_url}}:{{port}}
+
+### GET index route
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+### GET stock
+GET {{url}}/stock HTTP/1.1
+
+### Create stock 
+POST {{url}}/stock HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "name",
+    "price": "price",
+    "stock": 1234
+}
+
+### PATCH stock 
+PATCH {{url}}/stock/3 HTTP/1.1
+
+### PUT stock 
+PATCH {{url}}/stock/2 HTTP/1.1
+
+### DELETE stock 
+DELETE {{url}}/stock/ec4cfa9e-5fb9-4e2c-8e7c-74e2a93791c4 HTTP/1.1
