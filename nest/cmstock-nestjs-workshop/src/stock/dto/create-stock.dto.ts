@@ -7,11 +7,15 @@ export class CreateStockDto {
   })
   name: string;
 
+  // @IsNotEmpty()
+  // @IsNumber({ maxDecimalPlaces: 2 })
+  // price: number;
   @IsNotEmpty()
-  @IsNumber({ maxDecimalPlaces: 2 })
-  price: number;
+  price: string;
 
+  // @IsNotEmpty()
+  // @IsNumber({ maxDecimalPlaces: 0 })
+  // stock: number;
   @IsNotEmpty()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  stock: number;
+  stock: string;
 }

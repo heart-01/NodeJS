@@ -15,8 +15,8 @@ export class ProductRepository extends Repository<ProductEntity> {  // บอก
 
     const product = new ProductEntity();
     product.name = name;
-    product.price = price;
-    product.stock = stock;
+    product.price = +price;
+    product.stock = +stock;
     await product.save();
 
     return product;

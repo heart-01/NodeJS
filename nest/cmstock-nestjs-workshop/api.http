@@ -19,6 +19,29 @@ Content-Type: application/json
     "stock": 1234
 }
 
+### Create stock pass image
+POST {{url}}/stock HTTP/1.1 
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="name"
+
+test
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="price"
+
+25.8
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="stock"
+
+1234
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="profile.png"
+Content-Type: image/png
+
+< ./src/assets/mock/profile.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
 ### PATCH stock 
 PATCH {{url}}/stock/3 HTTP/1.1
 
