@@ -15,7 +15,7 @@ export class StockController {
   // ValidationPipe ทำหน้าที่ verification การตรวสอบข้อมูลใน pipe
   @UsePipes(ValidationPipe) // ตรวจสอบข้อมูลที่ส่งเข้ามาในท่อส่งข้อมูลในที่นี้จะตรวจสอบข้อมูลโดย validate กับ dto
   @UsePipes(new ChangeStringCasePipe()) // เรียกใช้ custom pipe ที่เขียนขึ้นมาและ จะถูกเรียกใช้งานก่อน ValidationPipe เสมอ
-  create(@UploadedFile() file, @Body() createStockDto: CreateStockDto): object {  // @Body() createStockDto: CreateStockDto คือ รับข้อมูลที่ส่งเข้ามาจาก body ทั้งหมดจะต้องมี data ที่ตรงกับ rule dto ของ createStockDto ทั้งหมด
+  create(@UploadedFile() file: Express.Multer.File, @Body() createStockDto: CreateStockDto): object {  // @Body() createStockDto: CreateStockDto คือ รับข้อมูลที่ส่งเข้ามาจาก body ทั้งหมดจะต้องมี data ที่ตรงกับ rule dto ของ createStockDto ทั้งหมด
     console.log(file);
     return this.stockService.create(createStockDto);
   }
