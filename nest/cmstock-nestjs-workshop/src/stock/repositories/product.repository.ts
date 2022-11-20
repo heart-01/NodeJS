@@ -10,13 +10,14 @@ export class ProductRepository extends Repository<ProductEntity> {  // บอก
     super(ProductEntity, dataSource.createEntityManager()); // ส่ง ProductEntity เข้าไปใน constructor class แม่ เพื่อบอกว่า class ProductRepository จะทำงานกับ ProductEntity โดยสามารถแยก custom function ที่มีนอกเหนือจาก find, insert, update, delete
   }
 
-  async insertProduct( createProductDto: CreateStockDto, ): Promise<ProductEntity | undefined> {
+  async insertProduct( createProductDto: CreateStockDto, image: string): Promise<ProductEntity | undefined> {
     const { name, price, stock } = createProductDto;
 
     const product = new ProductEntity();
     product.name = name;
     product.price = +price;
     product.stock = +stock;
+    product.image = image;
     await product.save();
 
     return product;

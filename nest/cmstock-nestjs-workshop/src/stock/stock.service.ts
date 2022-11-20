@@ -8,12 +8,12 @@ import { ProductRepository } from './repositories/product.repository';
 export class StockService {
   constructor(private productRepository: ProductRepository) {} // ฉีด ProductRepository เข้ามาใน class StockService
 
-  async create(createStockDto: CreateStockDto): Promise<object> {
-    const product = await this.productRepository.insertProduct(createStockDto);
+  async create(createStockDto: CreateStockDto, file: Express.Multer.File): Promise<object> {
+    const product = await this.productRepository.insertProduct(createStockDto, file?.filename);
 
     return {
       success: true,
-      data: product ,
+      data: product,
     };
   }
 
