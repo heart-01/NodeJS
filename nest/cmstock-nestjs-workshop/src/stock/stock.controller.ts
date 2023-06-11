@@ -16,7 +16,7 @@ export class StockController {
   // ValidationPipe ทำหน้าที่ verification การตรวสอบข้อมูลใน pipe
   @UsePipes(ValidationPipe) // ตรวจสอบข้อมูลที่ส่งเข้ามาในท่อส่งข้อมูลในที่นี้จะตรวจสอบข้อมูลโดย validate กับ dto
   @UsePipes(new ChangeStringCasePipe()) // เรียกใช้ custom pipe ที่เขียนขึ้นมาและ จะถูกเรียกใช้งานก่อน ValidationPipe เสมอ
-  create(
+  addStock(
     @UploadedFile() file: Express.Multer.File,
     @Body() createStockDto: CreateStockDto, // @Body() createStockDto: CreateStockDto คือ รับข้อมูลที่ส่งเข้ามาจาก body ทั้งหมดจะต้องมี data ที่ตรงกับ rule dto ของ createStockDto ทั้งหมด
   ): object {
@@ -24,12 +24,12 @@ export class StockController {
   }
 
   @Get()
-  findAll(): Promise<ProductEntity[]> {
+  getStock(): Promise<ProductEntity[]> {
     return this.stockService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): string {
+  getStockById(@Param('id') id: number): string {
     return this.stockService.findOne(id);
   }
 
@@ -50,7 +50,7 @@ export class StockController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): string {
+  deleteStockById(@Param('id') id: number): string {
     return this.stockService.remove(id);
   }
 }
