@@ -1,0 +1,6 @@
+npm install @nestjs/config
+npm i class-transformer
+npm i class-validator
+npm i change-case
+npm i typeorm @nestjs/typeorm pg
+npm i @types/multer @types/fs-extra
