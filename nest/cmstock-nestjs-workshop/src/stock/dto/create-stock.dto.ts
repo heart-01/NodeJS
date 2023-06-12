@@ -13,13 +13,18 @@ export class CreateStockDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3, {
-    message: 'Name is too short',
+    message: 'Name is too shortใ',
   })
   @MaxLength(300)
   name: string;
 
   @IsNotEmpty()
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    {
+      message: 'Price must have a maximum of two decimal placesใ',
+    },
+  )
   @IsPositive()
   @Min(1)
   @Max(9999)

@@ -7,9 +7,11 @@ export class ChangeStringCasePipe implements PipeTransform {  // สร้าง
   transform(value: any, metadata: ArgumentMetadata) { // value ที่ไหลเข้ามาใน pipe
 
     console.log('Data passed in Pipe', JSON.stringify(value));
-    
-    if (get(value, 'value.name')) {
-      value.name = changeCase.capitalCase(value.name);
+
+    const name = get(value, 'name');
+
+    if (name) {
+      value.name = changeCase.capitalCase(name);
     }
 
     return value;
