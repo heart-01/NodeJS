@@ -6,7 +6,7 @@ import { ProductEntity } from './entities/product.entity';
 import { ProductRepository } from './repositories/product.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductEntity])],
+  imports: [TypeOrmModule.forFeature([ProductEntity])], // TypeOrmModule.forFeature ใช้กับ module ที่เป็นของลูกกำหนด ProductEntity ว่าให้ใช้งานกับ Module stock.module
   controllers: [StockController],
   providers: [StockService, ProductRepository],
 })

@@ -1,6 +1,20 @@
 import { ApiTags } from '@nestjs/swagger';
 import { CreateStockDto } from './dto/create-stock.dto';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Put, UseInterceptors, UploadedFile, } from '@nestjs/common';
+import {
+  Req,
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+  Put,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { StockService } from './stock.service';
 import { ChangeStringCasePipe } from '../pipes/change-string-case/change-string-case.pipe';
 import { ProductEntity } from './entities/product.entity';
@@ -18,20 +32,21 @@ export class StockController {
   // ValidationPipe ทำหน้าที่ validate data DTO
   // @UsePipes(ValidationPipe) // ตรวจสอบข้อมูลที่ส่งเข้ามาในท่อส่งข้อมูลในที่นี้จะตรวจสอบข้อมูลโดย validate กับ dto
   @UsePipes(new ChangeStringCasePipe()) // เรียกใช้ custom pipe ที่เขียนขึ้นมาและ pipe ที่ cutiom จะถูกเรียกใช้งานก่อน ValidationPipe เสมอ
-  addStock(
+  async create(
+    @Req() req,
     @UploadedFile() file: Express.Multer.File,
     @Body() createStockDto: CreateStockDto, // @Body() createStockDto: CreateStockDto คือ รับข้อมูลที่ส่งเข้ามาจาก body ทั้งหมดจะต้องมี data ที่ตรงกับ rule dto ของ createStockDto ทั้งหมด
-  ): object {
+  ): Promise<object> {
     return this.stockService.create(createStockDto, file);
   }
 
   @Get()
-  getStock(): Promise<ProductEntity[]> {
+  findAll(): Promise<ProductEntity[]> {
     return this.stockService.findAll();
   }
 
   @Get(':id')
-  getStockById(@Param('id') id: number): string {
+  findOneById(@Param('id') id: number): string {
     return this.stockService.findOne(id);
   }
 
@@ -52,7 +67,7 @@ export class StockController {
   }
 
   @Delete(':id')
-  deleteStockById(@Param('id') id: number): string {
+  remove(@Param('id') id: number): string {
     return this.stockService.remove(id);
   }
 }
