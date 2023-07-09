@@ -1,0 +1,9 @@
+server:
+  port: 5000
+
+db:
+  username: postgres
+  password: postgres
+
+jwt:
+  secretKey: codemobilepro

@@ -1,0 +1,52 @@
+yarn add class-transformer class-validator
+yarn add change-case
+yarn add rxjs typeorm @nestjs/typeorm pg
+(ต้องใช้ทั้ง typeorm และ @nestjs/typeorm)
+
+// Setup TypeOrm configuration
+import { TypeOrmModuleOptions } from '@nestjs/typeorm'
+export const typeOrmConfig: TypeOrmModuleOptions = {
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: 'postgres',
+    database: 'cmstock',
+    autoLoadEntities: true, // true เพื่อให้มัน auto load entity เพื่อให้พร้อมใช้งาน
+    synchronize: true,
+}
+
+
+
+import { diskStorage } from "multer";
+import * as fsExtra from 'fs-extra'
+import { extname } from 'path';
+
+yarn add multer fs-extra
+
+https://github.com/typeorm/typeorm/blob/master/docs/entities.md#column-types-for-postgres
+
+
+
+yarn add bcrypt
+yarn add @nestjs/jwt @nestjs/passport passport passport-jwt
+
+configuration
+yarn global add win-node-env
+yarn add config
+
+
+#PreDeployment
+1. Change bcrypt to bcryptjs "yarn remove bcrypt" -> "yarn add bcryptjs"
+2. Edit package.json
+
+"devDependencies": {
+    "@nestjs/cli": "^9.0.0",
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.0.0",
+    "typescript": "^4.7.4",
+    "ts-node": "^10.0.0",
+}
+
+https://docs.nestjs.com/recipes/serve-static
+yarn add  @nestjs/serve-static  
