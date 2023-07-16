@@ -17,7 +17,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { StockService } from './stock.service';
-import { ChangeStringCasePipe } from '../pipes/change-string-case/change-string-case.pipe';
+import { ChangeStringCasePipe } from '../../pipes/change-string-case/change-string-case.pipe';
 import { ProductEntity } from './entities/product.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer.config';

@@ -1,6 +1,6 @@
 import { ProductEntity } from '../entities/product.entity';
 import { DataSource, Repository } from 'typeorm';
-import { CreateStockDto } from './../dto/create-stock.dto';
+import { CreateStockDto } from '../dto/create-stock.dto';
 import { Injectable } from '@nestjs/common';
 
 // custom Repository เป็น class ที่ใช้แทน query ใน table
