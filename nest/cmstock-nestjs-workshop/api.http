@@ -9,6 +9,9 @@ Content-Type: application/json
 ### GET stock
 GET {{url}}/stock HTTP/1.1
 
+### GET stock by name
+GET {{url}}/stock?name=Test HTTP/1.1
+
 ### GET stock by id
 GET {{url}}/stock/1 HTTP/1.1
 

@@ -14,6 +14,7 @@ import {
   Put,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { StockService } from './stock.service';
 import { ChangeStringCasePipe } from '../pipes/change-string-case/change-string-case.pipe';
@@ -42,8 +43,8 @@ export class StockController {
   }
 
   @Get()
-  findAll(): Promise<ProductEntity[]> {
-    return this.stockService.findAll();
+  findAll(@Query('name') keyword: string): Promise<ProductEntity[]> {
+    return this.stockService.findAll(keyword);
   }
 
   @Get(':id')
@@ -58,9 +59,6 @@ export class StockController {
     @UploadedFile() file: Express.Multer.File,
     @Body() updateStockDto: UpdateStockDto,
   ): Promise<object> {
-    if (file) {
-      this.stockService.removeFile(id);
-    }
     return this.stockService.update(id, updateStockDto, file);
   }
 
@@ -70,10 +68,7 @@ export class StockController {
     @Param('id') id: number,
     @UploadedFile() file: Express.Multer.File,
     @Body() updateStockDto: UpdateStockDto,
-  ):  Promise<object> {
-    if (file) {
-      this.stockService.removeFile(id);
-    }
+  ): Promise<object> {
     return this.stockService.updateAll(id, updateStockDto, file);
   }
 

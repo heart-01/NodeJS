@@ -30,8 +30,14 @@ export class StockService {
     };
   }
 
-  async findAll(): Promise<ProductEntity[]> {
-    return await this.productRepositoryCustom.find();
+  async findAll(keyword: string): Promise<ProductEntity[]> {
+    if (keyword) {
+      const query = this.productRepositoryCustom.createQueryBuilder('product');
+      query.andWhere('product.name LIKE :keyword', { keyword: `%${keyword}%` });
+      return query.getMany();
+    } else {
+      return await this.productRepositoryCustom.find();
+    }
   }
 
   async findOne(id: number): Promise<object> {
@@ -52,7 +58,11 @@ export class StockService {
     updatedProduct.name = name;
     updatedProduct.price = price;
     updatedProduct.stock = stock;
-    updatedProduct.image = file && file?.filename;
+
+    if (file) {
+      this.removeFile(id);
+      updatedProduct.image = file?.filename;
+    }
 
     return await this.productRepositoryCustom.save(product);
   }
@@ -69,19 +79,23 @@ export class StockService {
     updatedProduct.name = name;
     updatedProduct.price = price;
     updatedProduct.stock = stock;
-    updatedProduct.image = file && file?.filename;
+
+    if (file) {
+      this.removeFile(id);
+      updatedProduct.image = file?.filename;
+    }
 
     return await this.productRepositoryCustom.save(product);
+  }
+
+  async remove(id: number): Promise<object> {
+    this.removeFile(id);
+    return await this.productRepositoryCustom.delete(id);
   }
 
   async removeFile(id: number) {
     const product = await this.findOne(id);
     const { image } = product as { image: string }; // กำหนด type โดยระบุ type ตาม key data product
     fsExtra.remove(`src/assets/img/${image}`);
-  }
-
-  async remove(id: number): Promise<object> {
-    this.removeFile(id);
-    return await this.productRepositoryCustom.delete(id);
   }
 }
