@@ -20,6 +20,7 @@ import { ChangeStringCasePipe } from '../pipes/change-string-case/change-string-
 import { ProductEntity } from './entities/product.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer.config';
+import { UpdateStockDto } from './dto/update-stock.dto';
 
 @ApiTags('stock')
 @Controller('stock') // Controller manage service stock
@@ -46,28 +47,38 @@ export class StockController {
   }
 
   @Get(':id')
-  findOneById(@Param('id') id: number): string {
+  findOneById(@Param('id') id: number): Promise<object> {
     return this.stockService.findOne(id);
   }
 
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('file', multerOptions))
   update(
     @Param('id') id: number,
-    @Body() createStockDto: CreateStockDto,
-  ): string {
-    return this.stockService.update(id, createStockDto);
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updateStockDto: UpdateStockDto,
+  ): Promise<object> {
+    if (file) {
+      this.stockService.removeFile(id);
+    }
+    return this.stockService.update(id, updateStockDto, file);
   }
 
   @Put(':id')
+  @UseInterceptors(FileInterceptor('file', multerOptions))
   updateStockAllById(
     @Param('id') id: number,
-    @Body() createStockDto: CreateStockDto,
-  ): string {
-    return this.stockService.updateAll(id, createStockDto);
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updateStockDto: UpdateStockDto,
+  ):  Promise<object> {
+    if (file) {
+      this.stockService.removeFile(id);
+    }
+    return this.stockService.updateAll(id, updateStockDto, file);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): string {
+  remove(@Param('id') id: number): object {
     return this.stockService.remove(id);
   }
 }
