@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StockModule } from './services/stock/stock.module';
@@ -16,6 +16,6 @@ import { loggerFunctionMiddleware } from './middlewares/logger.fn.middleware';
 export class AppModule {
   // configure middleware
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware, loggerFunctionMiddleware).forRoutes('*');
+    consumer.apply(LoggerMiddleware, loggerFunctionMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

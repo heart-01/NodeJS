@@ -22,9 +22,11 @@ import { ProductEntity } from './entities/product.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer.config';
 import { UpdateStockDto } from './dto/update-stock.dto';
+import { LoggerReqResInterceptor } from './interceptors/logger-req-res.interceptor';
 
 @ApiTags('stock')
 @Controller('stock') // Controller manage service stock
+@UseInterceptors(LoggerReqResInterceptor) // เรียกใช้งาน UseInterceptors ในระดับ controller
 export class StockController {
   constructor(private readonly stockService: StockService) {}
 
