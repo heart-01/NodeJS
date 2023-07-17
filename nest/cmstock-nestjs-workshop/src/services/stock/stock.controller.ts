@@ -15,6 +15,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { StockService } from './stock.service';
 import { ChangeStringCasePipe } from '../../pipes/change-string-case/change-string-case.pipe';
@@ -23,9 +24,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer.config';
 import { UpdateStockDto } from './dto/update-stock.dto';
 import { LoggerReqResInterceptor } from './interceptors/logger-req-res.interceptor';
+import { MyGuard } from 'src/guard/my.guard';
 
 @ApiTags('stock')
 @Controller('stock') // Controller manage service stock
+@UseGuards(MyGuard) // เรียกใช้งาน UseGuards ในระดับ controller
 @UseInterceptors(LoggerReqResInterceptor) // เรียกใช้งาน UseInterceptors ในระดับ controller
 export class StockController {
   constructor(private readonly stockService: StockService) {}
