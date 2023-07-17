@@ -43,7 +43,8 @@ export class StockController {
   }
 
   @Get()
-  findAll(@Query('name') keyword: string): Promise<ProductEntity[]> {
+  findAll(@Query('name') keyword: string, @Req() req): Promise<ProductEntity[]> {
+    console.log(`Added by Middleware : ${req.timestamp}`)
     return this.stockService.findAll(keyword);
   }
 
