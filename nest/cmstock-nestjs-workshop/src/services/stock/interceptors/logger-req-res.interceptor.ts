@@ -15,6 +15,7 @@ export class LoggerReqResInterceptor implements NestInterceptor {
 
     const now = Date.now();
     return next.handle().pipe(
+      tap(() => console.log('After...')),
       tap(() => console.log(`process time ${Date.now() - now} ms`)),
       map((res) => {
         return { result: res };
