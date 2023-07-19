@@ -133,6 +133,15 @@ Content-Type: application/json
     "password": "P@ssw0rd"
 }
 
+### Refresh token
+POST {{url}}/auth/refreshToken HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNjg5Nzc2NjQyLCJleHAiOjE2ODk3ODAyNDJ9.uC5DqUNLswnSh6MB0BnETXDnSZV3GLWlXIzdLaBPH80
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNjg5Nzc2MTExLCJleHAiOjE2OTAzODA5MTF9.QnrHMOXTORwPka0Jfdvrjj6HRQ3tN4ILb58acnp2Ijo"
+}
+
 ### Test guard route
 GET {{url}}/auth/testJWT HTTP/1.1
 Content-Type: application/json

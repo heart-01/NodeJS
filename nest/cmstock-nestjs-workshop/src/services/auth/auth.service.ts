@@ -72,8 +72,24 @@ export class AuthService {
     }
 
     const payload = { username: user.username };
-    const token = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload);
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: '7d', // หมดอายุใน 7 วัน
+    });
 
-    return { username: user.username, token };
+    return { username: user.username, token: accessToken, refreshToken };
+  }
+
+  async validateToken(refreshToken: string) {
+    try {
+      const payloadRefreshToken = this.jwtService.verify(refreshToken);
+      const payloadAccessToken = { username: payloadRefreshToken.username };
+      const accessToken = this.jwtService.sign(payloadAccessToken, {
+        expiresIn: '1h',
+      });
+      return { username: payloadAccessToken.username, token: accessToken };
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
   }
 }

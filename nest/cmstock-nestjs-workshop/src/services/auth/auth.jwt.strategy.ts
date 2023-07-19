@@ -12,6 +12,7 @@ export class AuthJwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // บอกว่าจะแนบ jwt token มาทาง header bearer
+      ignoreExpiration: false,
       secretOrKey: 'password', // key ที่ใช้ตรวจ token ต้องตรงกับตอน sign jwt
     });
   }

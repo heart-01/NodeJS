@@ -21,6 +21,11 @@ export class AuthController {
     return this.authenService.signIn(userCredentailDto);
   }
 
+  @Post('/refreshToken')
+  async refreshToken(@Req() req) {
+    return this.authenService.validateToken(req.body.refreshToken);
+  }
+
   @Get('/testJWT')
   @UseGuards(AuthGuard())
   test(@Req() req, @GetUsername() username) {
