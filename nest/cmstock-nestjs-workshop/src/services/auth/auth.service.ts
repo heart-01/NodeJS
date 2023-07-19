@@ -10,12 +10,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserResponseDto } from './dto/user-credentai-response.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async createUser(
@@ -69,6 +71,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid username or password');
     }
 
-    return { payload: user };
+    const payload = { username: user.username };
+    const token = this.jwtService.sign(payload);
+
+    return { username: user.username, token };
   }
 }

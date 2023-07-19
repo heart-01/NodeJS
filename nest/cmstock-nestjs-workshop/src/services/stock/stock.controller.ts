@@ -25,10 +25,12 @@ import { multerOptions } from 'src/config/multer.config';
 import { UpdateStockDto } from './dto/update-stock.dto';
 import { LoggerReqResInterceptor } from './interceptors/logger-req-res.interceptor';
 import { MyGuard } from 'src/guard/my.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('stock')
 @Controller('stock') // Controller manage service stock
-@UseGuards(MyGuard) // เรียกใช้งาน UseGuards ในระดับ controller
+// @UseGuards(MyGuard) // เรียกใช้งาน UseGuards ในระดับ controller
+@UseGuards(AuthGuard()) // ถ้า token ไม่ถูกจะใช้งาน controller ไม่ได้
 @UseInterceptors(LoggerReqResInterceptor) // เรียกใช้งาน UseInterceptors ในระดับ controller
 export class StockController {
   constructor(private readonly stockService: StockService) {}
