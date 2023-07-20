@@ -6,15 +6,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthJwtStrategy } from './auth.jwt.strategy';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: 'password',
-      signOptions: {
-        expiresIn: '1h'
-      },
+    JwtModule.registerAsync({
+      // imports: [ConfigModule], // ไม่ต้อง imports เพราะ กำหนด ConfigModule isGlobal: true
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRETKEY'),
+        signOptions: {
+          expiresIn: '1h',
+        },
+      }),
+      inject: [ConfigService] // ใช้ inject เพื่อระบุว่าต้องใช้ ConfigService ใน useFactory และสร้าง JwtModule
     }),
     TypeOrmModule.forFeature([UserEntity]),
   ],

@@ -4,16 +4,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UnauthorizedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 export class AuthJwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>,
+    private readonly configService: ConfigService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // บอกว่าจะแนบ jwt token มาทาง header bearer
       ignoreExpiration: false,
-      secretOrKey: 'password', // key ที่ใช้ตรวจ token ต้องตรงกับตอน sign jwt
+      // secretOrKey: jwtSecretKey, // key ที่ใช้ตรวจ token ต้องตรงกับตอน sign jwt ใช้งานแบบ hard code
+      secretOrKeyProvider: (request: any, rawJwtToken: any, done: (arg0: null, arg1: string) => void) => { // key ที่ใช้ตรวจ token ต้องตรงกับตอน sign jwt แต่ใช้งานแบบดึงจากไฟล์ env
+        const jwtSecretKey = this.configService.get<string>('JWT_SECRETKEY');
+        done(null, jwtSecretKey);
+      },
     });
   }
 

@@ -2,10 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
+  const port = configService.get<number>('PORT');
 
   // initialize swagger: http://localhost:3000/api
   const config = new DocumentBuilder()
@@ -28,6 +32,7 @@ async function bootstrap() {
   );
   app.enableCors(); // Open CORS
   app.use(express.json({ limit: '10mb' })); // การใช้ middleware ของ Express.js เพื่อรับข้อมูลที่ถูกส่งมาในรูปแบบ JSON และกำหนดขีดจำกัดความจุไฟล์ที่สามารถรับได้เป็น 10 เมกะไบต์ (10mb) เมื่อมีการส่งข้อมูล JSON เข้ามาทาง HTTP request body โดยส่วนนี้ใช้เพื่อป้องกันการรับข้อมูลที่มีขนาดใหญ่เกินกำหนดที่กำหนดไว้
-  await app.listen(3000);
+
+  await app.listen(port);
 }
 bootstrap();
